@@ -31,3 +31,13 @@ class GroupHelper:
         wd.find_element("name", "submit").click()
         # return to groups page
         self.returnToGroupsPage()
+    
+    def deleteFirstGroup(self):
+        wd = self.app.wd
+        self.openGroupsPage()
+        # select first group
+        wd.find_element("name", "selected[]").click()
+        # submit deletion
+        wd.find_element("name", "delete").click()
+        # return to groups page
+        self.returnToGroupsPage()
