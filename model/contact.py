@@ -16,4 +16,3 @@ class Contact:
         self.address = address
         self.birthDate = birthDate
         self.notes = notes
-
