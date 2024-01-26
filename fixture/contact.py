@@ -46,3 +46,12 @@ class ContactHelper:
         self.openContactsForm()
         self.addNewContact(contact)
         self.returnToMainPage()
+    
+    def deleteFirst(self):
+        wd = self.app.wd
+        # select first contact
+        wd.find_element("name", "selected[]").click()
+        # submit deletion
+        wd.find_element("xpath", "//input[@value='Delete']").click()
+        # accept deletion alert
+        wd.switch_to.alert.accept()

@@ -32,7 +32,7 @@ class GroupHelper:
         # return to groups page
         self.returnToGroupsPage()
     
-    def deleteFirstGroup(self):
+    def deleteFirst(self):
         wd = self.app.wd
         self.openGroupsPage()
         # select first group
