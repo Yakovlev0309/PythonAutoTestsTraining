@@ -13,7 +13,7 @@ class Application:
         self.group = GroupHelper(self)
         self.contact = ContactHelper(self)
 
-    def openHomePage(self):
+    def open_home_page(self):
         self.wd.get("http://localhost/addressbook/")
 
     def destroy(self):
