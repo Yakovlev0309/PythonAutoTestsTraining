@@ -1,4 +1,3 @@
-from model.contact import BirthDate
 
 
 class ContactHelper:
@@ -63,17 +62,7 @@ class ContactHelper:
 
     def modify_first_contact(self, new_contact_data):
         wd = self.app.wd
-        wd.find_element("xpath", "//img[@alt='Edit']").click()
+        wd.find_element("xpath", "//img[@title='Edit']").click()
         self.fill_contact_form(new_contact_data)
         wd.find_element("name", "update").click()
         self.return_to_main_page()
-
-    # def modify_first_contact(self, home, mobile):
-    #     wd = self.app.wd
-    #     wd.find_element("xpath", "//img[@alt='Edit']").click()
-    #     wd.find_element("name", "home").clear()
-    #     wd.find_element("name", "home").send_keys(home)
-    #     wd.find_element("name", "mobile").clear()
-    #     wd.find_element("name", "mobile").send_keys(mobile)
-    #     wd.find_element("name", "update").click()
-    #     self.return_to_main_page()
