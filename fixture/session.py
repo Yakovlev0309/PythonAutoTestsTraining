@@ -27,13 +27,13 @@ class SessionHelper:
         return self.app.wb.find_element("xpath", "//div/div[1]/form/b").text == f"({username})"
 
     def ensure_login(self, username, password):
-        if self.is_logged_in():
-            if self.is_logged_in_as(username):
+        if self.is_logged_in(): # вход выполнен
+            if self.is_logged_in_as(username): # вход выполнен под тем же именем
                 return
-            else:
-                self.logout()
+            else: # вход выполнен под другим именем
+                self.logout() # выход
         self.login(username, password)
 
     def ensure_logout(self):
-        if self.is_logged_in():
-            self.logout()
+        if self.is_logged_in(): # вход выполнен
+            self.logout() # выход

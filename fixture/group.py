@@ -54,3 +54,7 @@ class GroupHelper:
         self.fill_group_form(new_group_data)
         wd.find_element("name", "update").click()
         self.return_to_groups_page()
+
+    def count(self):
+        self.open_groups_page()
+        return len(self.app.wd.find_elements("name", "selected[]"))
