@@ -5,7 +5,9 @@ class ContactHelper:
         self.app = app
 
     def open_add_contact_form(self):
-        self.app.wd.find_element("link text", "add new").click()
+        wd = self.app.wd
+        self.return_to_main_page()
+        wd.find_element("link text", "add new").click()
 
     def change_field_value(self, field_name, value):
         wd = self.app.wd
@@ -44,7 +46,9 @@ class ContactHelper:
         self.app.wd.find_element("xpath", "(//input[@name='submit'])[2]").click()
 
     def return_to_main_page(self):
-        self.app.wd.find_element("link text", "home").click()
+        wd = self.app.wd
+        if not (wd.current_url.endswith("/addressbook/") and len(wd.find_elements("id", "search_count")) > 0):
+            wd.find_element("link text", "home").click()
 
     def add(self, contact):
         self.open_add_contact_form()
@@ -67,11 +71,6 @@ class ContactHelper:
         wd.find_element("name", "update").click()
         self.return_to_main_page()
 
-    def is_on_main_page(self):
-        # return self.app.wd.current_url == "https://localhost/addressbook/"
-        return len(self.app.wd.find_elements("id", "search_count")) > 0
-
     def count(self):
-        if not self.is_on_main_page():
-            self.return_to_main_page()
+        self.return_to_main_page()
         return len(self.app.wd.find_elements("name", "selected[]"))
