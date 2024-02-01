@@ -55,37 +55,49 @@ class ContactHelper:
         self.open_add_contact_form()
         self.add_new_contact(contact)
         self.return_to_main_page()
+        self.contact_cache = None
 
     def delete_first_contact(self):
+        self.delete_contact_by_index(0)
+
+    def delete_contact_by_index(self, index):
         wd = self.app.wd
         # select first contact
-        wd.find_element("name", "selected[]").click()
+        wd.find_elements("name", "selected[]")[index].click()
         # submit deletion
         wd.find_element("xpath", "//input[@value='Delete']").click()
         # accept deletion alert
         wd.switch_to.alert.accept()
+        self.contact_cache = None
 
     def modify_first_contact(self, new_contact_data):
+        self.modify_contact_by_index(0, new_contact_data)
+
+    def modify_contact_by_index(self, index, new_contact_data):
         wd = self.app.wd
-        wd.find_element("xpath", "//img[@title='Edit']").click()
+        wd.find_elements("xpath", "//img[@title='Edit']")[index].click()
         self.fill_contact_form(new_contact_data)
         wd.find_element("name", "update").click()
         self.return_to_main_page()
+        self.contact_cache = None
 
     def count(self):
         self.return_to_main_page()
         return len(self.app.wd.find_elements("name", "selected[]"))
     
+    contact_cache = None
+
     def get_contact_list(self):
-        wd = self.app.wd
-        self.return_to_main_page()
-        contacts = []
-        maintable = wd.find_element("id", "maintable")
-        entries = maintable.find_elements("name", "entry")
-        for i in range(len(entries)):
-            id = entries[i].find_element("name", "selected[]").get_attribute("value")
-            tmp = entries[i].find_elements("css selector", "td")
-            lastname = tmp[1].text
-            firstname = tmp[2].text
-            contacts.append(Contact(id=id, firstname=firstname, lastname=lastname))
-        return contacts
+        if self.contact_cache is None:
+            wd = self.app.wd
+            self.return_to_main_page()
+            self.contact_cache = []
+            maintable = wd.find_element("id", "maintable")
+            entries = maintable.find_elements("name", "entry")
+            for i in range(len(entries)):
+                id = entries[i].find_element("name", "selected[]").get_attribute("value")
+                tmp = entries[i].find_elements("css selector", "td")
+                lastname = tmp[1].text
+                firstname = tmp[2].text
+                self.contact_cache.append(Contact(id=id, firstname=firstname, lastname=lastname))
+        return list(self.contact_cache)
