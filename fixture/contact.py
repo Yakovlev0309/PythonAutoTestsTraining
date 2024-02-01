@@ -105,25 +105,13 @@ class ContactHelper:
             wd = self.app.wd
             self.open_home_page()
             self.contact_cache = []
-
-            # maintable = wd.find_element("id", "maintable")
-            # entries = maintable.find_elements("name", "entry")
-            # for i in range(len(entries)):
-            #     id = entries[i].find_element("name", "selected[]").get_attribute("value")
-            #     tmp = entries[i].find_elements("css selector", "td")
-            #     lastname = tmp[1].text
-            #     firstname = tmp[2].text
-            #     self.contact_cache.append(Contact(id=id, firstname=firstname, lastname=lastname))
-
             for row in wd.find_elements("name", "entry"):
                 cells = row.find_elements("tag name", "td")
                 id = cells[0].find_element("tag name", "input").get_attribute("value")
                 firstname = cells[2].text
                 lastname = cells[1].text
-                all_phones = cells[5].text.splitlines()
-                self.contact_cache.append(Contact(id=id, firstname=firstname, lastname=lastname, 
-                                                  homephone=all_phones[0], mobilephone=all_phones[1], 
-                                                  workphone=all_phones[2], secondaryphone=all_phones[3]))
+                all_phones = cells[5].text
+                self.contact_cache.append(Contact(id=id, firstname=firstname, lastname=lastname, all_phones_from_home_page=all_phones))
         return list(self.contact_cache)
     
     def get_contact_info_from_edit_page(self, index):
