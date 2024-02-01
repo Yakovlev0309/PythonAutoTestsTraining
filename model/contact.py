@@ -9,15 +9,17 @@ class BirthDate:
 
 
 class Contact:
-    def __init__(self, id=None, firstname=None, lastname=None, nickname=None, company=None, address=None, home=None, mobile=None, birth_date=None, notes=None):
+    def __init__(self, id=None, firstname=None, lastname=None, nickname=None, company=None, address=None, homephone=None, mobilephone=None, workphone=None, secondaryphone=None, birth_date=None, notes=None):
         self.id = id
         self.firstname = firstname
         self.lastname = lastname
         self.nickname = nickname
         self.company = company
         self.address = address
-        self.home = home
-        self.mobile = mobile
+        self.homephone = homephone
+        self.mobilephone = mobilephone
+        self.workphone = workphone
+        self.secondaryphone = secondaryphone
         self.birth_date = birth_date
         self.notes = notes
 

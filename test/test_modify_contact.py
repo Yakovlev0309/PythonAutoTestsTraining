@@ -7,14 +7,14 @@ def test_modify_some_contact_phone(app):
         app.contact.add(Contact(firstname="Firstname", lastname="Lastname"))
     old_contacts = app.contact.get_contact_list()
     index = randrange(len(old_contacts))
-    contact = Contact(home="48-22-56", mobile="8-800-555-35-35")
+    contact = Contact(homephone="48-22-56", mobilephone="8-800-555-35-35")
     contact.id = old_contacts[index].id
     app.contact.modify_contact_by_index(index, contact)
     assert len(old_contacts) == app.contact.count()
     new_contacts = app.contact.get_contact_list()
     old_contacts[index].id = contact.id
-    old_contacts[index].home = contact.home
-    old_contacts[index].mobile = contact.mobile
+    old_contacts[index].home = contact.homephone
+    old_contacts[index].mobile = contact.mobilephone
     assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
 
 
