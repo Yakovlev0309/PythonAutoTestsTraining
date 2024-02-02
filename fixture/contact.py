@@ -34,6 +34,7 @@ class ContactHelper:
 
     def fill_contact_form(self, contact):
         self.change_field_value("firstname", contact.firstname)
+        self.change_field_value("middlename", contact.middlename)
         self.change_field_value("lastname", contact.lastname)
         self.change_field_value("nickname", contact.nickname)
         self.change_field_value("company", contact.company)
@@ -119,6 +120,7 @@ class ContactHelper:
         self.open_contact_edit_by_index(index)
         id = wd.find_element("name", "id").get_attribute("value")
         firstname = wd.find_element("name", "firstname").get_attribute("value")
+        middlename = wd.find_element("name", "middlename").get_attribute("value")
         lastname = wd.find_element("name", "lastname").get_attribute("value")
         nickname = wd.find_element("name", "nickname").get_attribute("value")
         company = wd.find_element("name", "company").get_attribute("value")
@@ -129,17 +131,32 @@ class ContactHelper:
         secondaryphone = wd.find_element("name", "phone2").get_attribute("value")
         # birth_date = wd.find_element("name", "").get_attribute("value") # TODO доделать
         notes = wd.find_element("name", "notes").get_attribute("value")
-        return Contact(id=id, firstname=firstname, lastname=lastname, nickname=nickname, 
+        return Contact(id=id, firstname=firstname, middlename=middlename, lastname=lastname, nickname=nickname, 
                        company=company, address=address, homephone=homephone, mobilephone=mobilephone, 
                        workphone=workphone, secondaryphone=secondaryphone, notes=notes)
 
     def get_contact_from_view_page(self, index):
         wd = self.app.wd
         self.open_contact_view_by_index(index)
-        text = wd.find_element("id", "content").text
-        homephone = re.search("H: (.*)", text).group(1)
-        mobilephone = re.search("M: (.*)", text).group(1)
-        workphone = re.search("W: (.*)", text).group(1)
-        secondaryphone = re.search("P: (.*)", text).group(1)
-        return Contact(homephone=homephone, mobilephone=mobilephone, 
+        content = wd.find_element("id", "content")
+        names = content.find_element("tag name", "b")
+        if names is not None:
+            all_names = names.text
+        else:
+            all_names = None
+        data = content.text
+        homephone = re.search("H: (.*)", data)
+        mobilephone = re.search("M: (.*)", data)
+        workphone = re.search("W: (.*)", data)
+        secondaryphone = re.search("P: (.*)", data)
+        if homephone is not None:
+            homephone = homephone.group(1)
+        if mobilephone is not None:
+            mobilephone = mobilephone.group(1)
+        if workphone is not None:
+            workphone = workphone.group(1)
+        if secondaryphone is not None:
+            secondaryphone = secondaryphone.group(1)
+        return Contact(all_names_from_view_page=all_names, 
+                       homephone=homephone, mobilephone=mobilephone, 
                        workphone=workphone, secondaryphone=secondaryphone)
