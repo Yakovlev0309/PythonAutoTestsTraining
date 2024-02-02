@@ -14,5 +14,5 @@ def test_names_on_contact_view_page(app):
 
 
 def merge_names_like_on_view_page(contact):
-    return " ".join(filter(lambda x: x is not None and x is not "", 
+    return " ".join(filter(lambda x: x is not None and x != "", 
                            [contact.firstname, contact.middlename, contact.lastname]))
