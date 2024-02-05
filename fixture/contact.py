@@ -43,6 +43,9 @@ class ContactHelper:
         self.change_field_value("mobile", contact.mobilephone)
         self.change_field_value("work", contact.workphone)
         self.change_field_value("phone2", contact.secondaryphone)
+        self.change_field_value("email", contact.email)
+        self.change_field_value("email2", contact.email2)
+        self.change_field_value("email3", contact.email3)
         self.change_birth_date(contact.birth_date)
         self.change_field_value("notes", contact.notes)
 
@@ -111,8 +114,10 @@ class ContactHelper:
                 id = cells[0].find_element("tag name", "input").get_attribute("value")
                 firstname = cells[2].text
                 lastname = cells[1].text
+                all_emails = cells[4].text
                 all_phones = cells[5].text
-                self.contact_cache.append(Contact(id=id, firstname=firstname, lastname=lastname, all_phones_from_home_page=all_phones))
+                self.contact_cache.append(Contact(id=id, firstname=firstname, lastname=lastname, 
+                                                  all_phones_from_home_page=all_phones, all_emails_from_home_page=all_emails))
         return list(self.contact_cache)
     
     def get_contact_info_from_edit_page(self, index):
@@ -129,22 +134,28 @@ class ContactHelper:
         mobilephone = wd.find_element("name", "mobile").get_attribute("value")
         workphone = wd.find_element("name", "work").get_attribute("value")
         secondaryphone = wd.find_element("name", "phone2").get_attribute("value")
+        email = wd.find_element("name", "email").get_attribute("value")
+        email2 = wd.find_element("name", "email2").get_attribute("value")
+        email3 = wd.find_element("name", "email3").get_attribute("value")
         # birth_date = wd.find_element("name", "").get_attribute("value") # TODO доделать
         notes = wd.find_element("name", "notes").get_attribute("value")
         return Contact(id=id, firstname=firstname, middlename=middlename, lastname=lastname, nickname=nickname, 
                        company=company, address=address, homephone=homephone, mobilephone=mobilephone, 
-                       workphone=workphone, secondaryphone=secondaryphone, notes=notes)
+                       workphone=workphone, secondaryphone=secondaryphone, 
+                       email=email, email2=email2, email3=email3, notes=notes)
 
     def get_contact_from_view_page(self, index):
         wd = self.app.wd
         self.open_contact_view_by_index(index)
         content = wd.find_element("id", "content")
+
         names = content.find_element("tag name", "b")
         if names is not None:
             all_names = names.text
         else:
             all_names = None
         data = content.text
+
         homephone = re.search("H: (.*)", data)
         mobilephone = re.search("M: (.*)", data)
         workphone = re.search("W: (.*)", data)
@@ -157,6 +168,9 @@ class ContactHelper:
             workphone = workphone.group(1)
         if secondaryphone is not None:
             secondaryphone = secondaryphone.group(1)
+
+        all_emails = "\n".join([a.text for a in content.find_elements("tag name", "a")])
+
         return Contact(all_names_from_view_page=all_names, 
                        homephone=homephone, mobilephone=mobilephone, 
-                       workphone=workphone, secondaryphone=secondaryphone)
+                       workphone=workphone, secondaryphone=secondaryphone, all_emails_from_home_page=all_emails)

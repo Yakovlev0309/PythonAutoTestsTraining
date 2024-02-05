@@ -33,4 +33,3 @@ def stop(request):
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="firefox")
     parser.addoption("--baseUrl", action="store", default="http://localhost/addressbook/")
-    # TODO добавить
