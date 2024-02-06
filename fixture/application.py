@@ -19,6 +19,7 @@ class Application:
             self.wd = webdriver.Edge()
         else:
             raise ValueError(f"Unrecognized browser {browser}")
+        
         # helpers initialization
         self.session = SessionHelper(self)
         self.group = GroupHelper(self)

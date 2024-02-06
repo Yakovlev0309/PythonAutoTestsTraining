@@ -15,10 +15,7 @@ class SessionHelper:
         wd.find_element("xpath", "//input[@value='Login']").click()
 
     def logout(self):
-        # FIXME без второго нажатия ничего не происходит
-        logoutBtn = self.app.wd.find_element("link text", "Logout")
-        logoutBtn.click()
-        logoutBtn.click()
+        self.app.wd.find_element("link text", "Logout").click()
 
     def is_logged_in(self):
         return len(self.app.wd.find_elements("link text", "Logout")) > 0
