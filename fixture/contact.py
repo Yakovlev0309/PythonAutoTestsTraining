@@ -24,7 +24,7 @@ class ContactHelper:
             wd.find_element("name", dropdown_name).click()
             dropdown = wd.find_element("name", dropdown_name)
             dropdown.find_element("xpath", f"//option[. = '{value}']").click()
-            wd.find_element("css selector", "select:nth-child(61) > option:nth-child(15)").click()
+            # wd.find_element("css selector", "select:nth-child(61) > option:nth-child(15)").click()
 
     def change_birth_date(self, birth_date):
         if birth_date is not None:
@@ -78,9 +78,25 @@ class ContactHelper:
         wd.switch_to.alert.accept()
         self.contact_cache = None
 
+    def delete_contact_by_id(self, id):
+        wd = self.app.wd
+        self.open_home_page()
+        # select first contact
+        # wd.find_element("css selector", f"selected[value='{id}']").click()
+        wd.find_element("id", f"{id}").click()
+        # submit deletion
+        wd.find_element("xpath", "//input[@value='Delete']").click()
+        # accept deletion alert
+        wd.switch_to.alert.accept()
+        self.contact_cache = None
+
     def open_contact_edit_by_index(self, index):
         self.open_home_page()
         self.app.wd.find_elements("xpath", "//img[@title='Edit']")[index].click()
+
+    def open_contact_edit_by_id(self, id):
+        self.open_home_page()
+        self.app.wd.find_element("xpath", f"//a[@href='edit.php?id={id}']").click()
 
     def open_contact_view_by_index(self, index):
         self.open_home_page()
@@ -94,6 +110,15 @@ class ContactHelper:
         self.open_home_page()
         self.open_contact_edit_by_index(index)
         self.fill_contact_form(new_contact_data)
+        wd.find_element("name", "update").click()
+        self.open_home_page()
+        self.contact_cache = None
+
+    def modify_contact(self, contact):
+        wd = self.app.wd
+        self.open_home_page()
+        self.open_contact_edit_by_id(contact.id)
+        self.fill_contact_form(contact)
         wd.find_element("name", "update").click()
         self.open_home_page()
         self.contact_cache = None

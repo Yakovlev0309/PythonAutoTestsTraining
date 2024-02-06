@@ -6,11 +6,9 @@ def test_modify_some_group_name(app, db, check_ui):
     if len(db.get_group_list()) == 0:
         app.group.create(Group(name="test"))
     old_groups = db.get_group_list()
-    g = random.choice(old_groups)
-    old_groups.remove(g)
-    group = g
+    group = random.choice(old_groups)
+    old_groups.remove(group)
     group.name = "Modified group"
-    # app.group.modify_group_by_index(index, group)
     app.group.modify_group(group)
 
     new_groups = db.get_group_list()
