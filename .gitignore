@@ -1,3 +1,5 @@
-__pycache__/
-.vscode/
-.idea/
+__pycache__
+.vscode
+.idea
+allure-report
+allure-results
